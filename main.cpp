@@ -7,9 +7,10 @@
   using namespace std;
 
   User addstudent(string username, string password); 
+  PrinterQueue choosePrinter(int printerNumber);
   int login(vector<User> users, string loginUsername, string loginPassword);
   void menu(User user);
-  PrinterQueue printerqueue;
+  
 
   int main() {
 
@@ -17,6 +18,8 @@
     string loginUsername, loginPassword;
     // Get index of specific User
     int index = 0;
+   
+
 
 //---------------------- GENERATE FAKE DATA -----------------------------
 
@@ -86,7 +89,9 @@
   }
 
   void menu(User user) {
-    int choice, pages, documentNum, chosenDoc;
+    int choice, pages, documentNum, queueChoice, chosenDoc;
+    //Init empty queue
+    PrinterQueue printerQueue;
 
     do {
       cout <<"----- User " << user.username << " -------" << endl;
@@ -105,7 +110,7 @@
           cout << "How many pages?" << endl;
           cin >> pages;
           user.addDocument(pages);
-          cout << "You have added " << pages << " pages" << endl;
+          cout << endl;
           break;
         case 2:
           cout << endl;
@@ -113,27 +118,69 @@
           cout << endl;        
           break;
         case 3:
-          cout <<"Which document do you want to print?" << endl;
+          cout <<"Which document do you want to print? Choose 0 for all" << endl;
           cin >> chosenDoc;
-          printerqueue.addToQueue(user.getDocumentFromNetwork(chosenDoc));
+          cout << endl;
+
+          if(chosenDoc == 0) {
+            cout << "Choose a printer to send all to:" << endl;
+            cout << "[1] PrinterA [2] PrinterB [3] PrinterC [4] PrinterD" << endl;
+            cin >> queueChoice;
+            printerQueue = choosePrinter(queueChoice); 
+            cout << user.documents.at(1);
+            printerQueue.addAllToQueue(user.documents);
+            cout << endl;
+          }
+          else {
+            cout << "Choose a printer to send to:" << endl;
+            cout << "[1] PrinterA [2] PrinterB [3] PrinterC [4] PrinterD" << endl;
+            cin >> queueChoice;
+            printerQueue = choosePrinter(queueChoice); 
+            printerQueue.addToQueue(chosenDoc, user.documents);
+            cout << endl;
+          }
+
           break;
         case 4:
-          cout << "All documents in the queue: " << endl;
-          // queue<int>printerQueue;
-          //showQueue(printerQueue);
+          printerQueue.showQueue();
+          cout << endl;
           break;
         case 5:
-          cout << "Released " << user.getDocumentFromNetwork(chosenDoc) << " pages" << endl << endl;
-          printerqueue.releasefromQueue(user.getDocumentFromNetwork(chosenDoc));
-          user.deleteFromNetwork(user.getDocumentFromNetwork(chosenDoc));
+          //release all jobs from queue
+          cout << "Document Released" << endl;
+          printerQueue.releasefromQueue();
+          cout << endl;
           break;
         case 6:
           cout << "You have successfully logged out." << endl;
-           break;
+          break;
         default :
-          cout<<"Invalid option. Please try again." << endl;
+          cout << " .... ";
       }   
            
-    } while(choice != 5);
+    } while(choice != 6);
         cout << "Shutting down" << endl;
+  }
+  
+  PrinterQueue choosePrinter(int printerNumber){
+    if(printerNumber == 1){
+      PrinterQueue QueueA;
+      return QueueA;
+    }
+     if(printerNumber == 2){
+      PrinterQueue QueueB;
+      return QueueB;
+    }
+     if(printerNumber == 3){
+      PrinterQueue QueueC;
+      return QueueC;
+    }
+     if(printerNumber == 4){
+      PrinterQueue QueueD;
+      return QueueD;
+    }
+    else {
+      PrinterQueue queueA;
+      return queueA;
+    }
   }

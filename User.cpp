@@ -27,7 +27,8 @@ User(string un, string pw) {
 void addDocument(int documentPages){
   if(balance < documentPages){
     cout << "You have no more pages left" << endl;
-  } else {
+  } 
+  else {
     cout << "Your balance is " << balance << endl;
     documents.push_back(documentPages);
     //deduct page balance
@@ -43,7 +44,8 @@ void viewDocumentsInNetwork(){
   if(documents.size() != 0){
     cout << endl << "----------------------------" << endl;
     cout << "Pending Documents:" << endl;
-    cout << "User:" << username << endl;
+    cout << "User: " << username << endl;
+    cout << "Balance: " << balance << endl;
     cout << "----------------------------" << endl;
     for(int i=0; i<documents.size(); i++) {
       cout << "Document " << i+1  << " has " << documents.at(i) << " pages" << endl;
@@ -70,3 +72,6 @@ void deleteFromNetwork(int document){
 }
 
 };
+
+// user.clear()
+// 
