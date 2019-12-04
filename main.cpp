@@ -1,13 +1,15 @@
   #include <iostream>
   #include <vector>
   #include "User.cpp"
+  #include "PrinterQueue.cpp"
   #include <array>
 
   using namespace std;
 
-  User addstudent(string username, string password);
+  User addstudent(string username, string password); 
   int login(vector<User> users, string loginUsername, string loginPassword);
   void menu(User user);
+  PrinterQueue printerqueue;
 
   int main() {
 
@@ -16,7 +18,7 @@
     // Get index of specific User
     int index = 0;
 
-//---------------------- GENERATE FAKE DATA ----------------------------------
+//---------------------- GENERATE FAKE DATA -----------------------------
 
     // Storing user classes in vector
     vector<User> users;
@@ -27,7 +29,7 @@
     "LLawrence", "BCarlee", "AThaddeous", "OJovita", 
     "HAlesia", "HLai", "GBrittni", "KRaylene", 
     "BFlo", "BJani", "MChauncey", "HRyan", 
-    "CJess", "DDiane"};
+    "CJess", "NULL"};
 
     string passWord[] = {"11791", "34429", "46040", "39211",
     "79602", "95070", "80030", "94545",
@@ -36,17 +38,17 @@
     "84024", "67410", "95678", "32114",
     "20001", "94945","83709", "46514",
     "69301", "98104", "32804", "75075",
-    "10016", "64504"};
+    "10016", "00000"};
 
     // Create User objects using username and password
-    for(int i=0; i<30; i++){
-    users.push_back( addstudent(userName[i], passWord[i]) );
+    for(int i=0; i<30; i++) {
+      users.push_back( addstudent(userName[i], passWord[i]) );
     }
     
 
 //---------------------- USER LOGIN ----------------------------------
 
-    // Once logged in, get index of the user in the vector
+   LOGIN_LABEL: // Once logged in, get index of the user in the vector
     index = login(users,loginUsername, loginPassword);
     while(index == -1) { 
       index = login(users,loginUsername, loginPassword);
@@ -54,12 +56,13 @@
 
     // Pass in the user with index into menu
     menu(users.at(index));
-  
+    goto LOGIN_LABEL; 
+
   } //end of main
 
 
 
-//---------------------- Function declarations ----------------------------------
+//-------------------- Function declarations ------------------------
 
   User addstudent(string username, string password){
     User student(username,password);
@@ -83,17 +86,16 @@
   }
 
   void menu(User user) {
-    int choice, pages, documentNum;
+    int choice, pages, documentNum, chosenDoc;
 
     do {
-
       cout <<"----- User " << user.username << " -------" << endl;
-      cout<<"[1] Add Documents" << endl;
-      cout<<"[2] View Documents" << endl;
-      cout<<"[3] Add Document to Printer Queue\n";
-      cout<<"[4] Print" << endl;
-      cout<<"[5] Logout" << endl;
-      cout<<"[6] EXIT" <<endl;
+      cout<<" [1] Add Documents" << endl;
+      cout<<" [2] View Documents" << endl;
+      cout<<" [3] Add Document to Printer Queue" << endl;
+      cout<<" [4] View Documents in Printer Queue" << endl;
+      cout<<" [5] Release Jobs" << endl;
+      cout<<" [6] Logout" << endl;
       cout<<endl;
       cout<<"What do you want to do? : ";
       cin>>choice;
@@ -112,19 +114,26 @@
           break;
         case 3:
           cout <<"Which document do you want to print?" << endl;
-          
-          cin>>doc_selection;
+          cin >> chosenDoc;
+          printerqueue.addToQueue(user.getDocumentFromNetwork(chosenDoc));
           break;
         case 4:
+          cout << "All documents in the queue: " << endl;
+          // queue<int>printerQueue;
+          //showQueue(printerQueue);
           break;
         case 5:
+          cout << "Released " << user.getDocumentFromNetwork(chosenDoc) << " pages" << endl << endl;
+          printerqueue.releasefromQueue(user.getDocumentFromNetwork(chosenDoc));
+          user.deleteFromNetwork(user.getDocumentFromNetwork(chosenDoc));
           break;
         case 6:
-          break;  
+          cout << "You have successfully logged out." << endl;
+           break;
         default :
-          cout<<"Invalid choice. \n";
+          cout<<"Invalid option. Please try again." << endl;
       }   
            
-    } while(choice != 6);
-        cout <<"All DONE";
+    } while(choice != 5);
+        cout << "Shutting down" << endl;
   }

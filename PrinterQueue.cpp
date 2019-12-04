@@ -1,3 +1,38 @@
+#include <iostream> 
+#include <queue> 
+  
+using namespace std; 
+
+class PrinterQueue {
+  public:
+  queue<int> printerQueue; 
+
+//push to the queue
+  void addToQueue(int pages) {
+    printerQueue.push(pages);
+  }
+
+  //  pop from the queue
+  //printFromQueue
+    void releasefromQueue(int pages){
+      printerQueue.pop();
+    }
+    
+  //Show all the elements in queue
+  void showQueue(queue <int> gq) { 
+    queue <int> g = gq; 
+      while (!g.empty()) { 
+        cout << '\t' << g.front(); 
+        // g.pop(); 
+      } 
+        cout << '\n'; 
+  } 
+  
+
+};
+
+
+
 // #include <iostream>
 // using namespace std; 
   
@@ -118,44 +153,4 @@
   
 //     return 0; 
 // }
-
-#include <iostream> 
-#include <queue> 
-  
-using namespace std; 
-
-class printerqueue {
-
-queue<int> printerQueue; 
-
-//push to the queue
-  void addToQueue(int pages) {
-    printerQueue.push(pages);
-  }
-
-  //  pop from the queue
-  //printFromQueue
-    void releasefromQueue(){
-      printerQueue.pop();
-    }
-    
-  //Show all the elements in queue
-  void showQueue(queue <int> gq) { 
-    queue <int> g = gq; 
-      while (!g.empty()) { 
-        cout << '\t' << g.front(); 
-        g.pop(); 
-      } 
-        cout << '\n'; 
-  } 
-  
-
-};
-
-
-
-
-
-
-
 
