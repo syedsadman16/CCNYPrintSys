@@ -11,7 +11,6 @@ class PrinterQueue {
   void addToQueue(int docIndex, vector<int> documents) {
     printerQueue.push(documents.at(docIndex-1));
     cout << "Document " << docIndex << " added to queue" << endl;
-    documents.erase(documents.begin()+(docIndex-1));
   }
 
   //Adding all documents to queue
@@ -19,7 +18,6 @@ class PrinterQueue {
     for(int i=0; i<documents.size(); i++) {
       printerQueue.push(documents.at(i));
       cout << "Document " << i+1 << " added to queue" << endl;
-      documents.erase(documents.begin()+i);
     }
   }
 

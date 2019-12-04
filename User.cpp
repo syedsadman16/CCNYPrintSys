@@ -51,7 +51,8 @@ void viewDocumentsInNetwork(){
       cout << "Document " << i+1  << " has " << documents.at(i) << " pages" << endl;
     }
     cout << "----------------------------" << endl;
-  } else {
+  } 
+  else {
     cout << "There are no documents pending." << endl;
   }
   
@@ -59,8 +60,7 @@ void viewDocumentsInNetwork(){
 
 
 //Getting specific document from network
-//This can be used to add a specific document to the printer queue fromt the network
-//Simulates 'releasing' a job from the netowrk
+//Passing in document number from vector 
 int getDocumentFromNetwork(int document){
   return documents.at(document-1); //returns the page num of a specific document
 }
@@ -68,10 +68,12 @@ int getDocumentFromNetwork(int document){
 
 //remove document from network
 void deleteFromNetwork(int document){
-  documents.erase(documents.begin()-document); //remove that document from the printer
+  documents.erase(documents.begin()+(document-1)); //remove that document from the printer
+}
+
+//remove all documents from queue
+void deleteAllFromNetwork(){
+  documents.clear();
 }
 
 };
-
-// user.clear()
-// 

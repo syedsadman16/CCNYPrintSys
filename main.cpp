@@ -126,9 +126,9 @@
             cout << "Choose a printer to send all to:" << endl;
             cout << "[1] PrinterA [2] PrinterB [3] PrinterC [4] PrinterD" << endl;
             cin >> queueChoice;
-            printerQueue = choosePrinter(queueChoice); 
-            cout << user.documents.at(1);
+            printerQueue = choosePrinter(queueChoice);             
             printerQueue.addAllToQueue(user.documents);
+            user.deleteAllFromNetwork();
             cout << endl;
           }
           else {
@@ -137,6 +137,7 @@
             cin >> queueChoice;
             printerQueue = choosePrinter(queueChoice); 
             printerQueue.addToQueue(chosenDoc, user.documents);
+            user.deleteFromNetwork(chosenDoc);
             cout << endl;
           }
 
