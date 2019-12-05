@@ -6,9 +6,13 @@
 
   using namespace std;
 
+  // Returns user with credentials
   User addstudent(string username, string password); 
+  // Returns a printer queue
   PrinterQueue choosePrinter(int printerNumber);
+  // Authenticates the user
   int login(vector<User> users, string loginUsername, string loginPassword);
+  // Main interface
   void menu(User user);
   
 
@@ -19,7 +23,6 @@
     // Get index of specific User
     int index = 0;
    
-
 
 //---------------------- GENERATE FAKE DATA -----------------------------
 
@@ -45,15 +48,16 @@
 
     // Create User objects using username and password
     for(int i=0; i<30; i++) {
-      users.push_back( addstudent(userName[i], passWord[i]) );
+      users.push_back(addstudent(userName[i], passWord[i]));
     }
     
 
-//---------------------- USER LOGIN ----------------------------------
+//---------------------- USER LOGIN ----------------------------------------
 
-   LOGIN_LABEL: // Once logged in, get index of the user in the vector
+   LOGIN_LABEL: 
+   // Retrieve index of user upon successful login
     index = login(users,loginUsername, loginPassword);
-    while(index == -1) { 
+    while(index == 42) { 
       index = login(users,loginUsername, loginPassword);
     }
 
@@ -65,42 +69,56 @@
 
 
 
-//-------------------- Function declarations ------------------------
+//-------------------- FUNCTION DECLARATIONS --------------------------------
 
+
+//--Creating Users------------------------
   User addstudent(string username, string password){
     User student(username,password);
     return student;
   }
 
+//--Authentication-------------------------
   int login(vector<User> users, string loginUsername, string loginPassword) {
     int index;
     cout << "Enter username" << endl;
     cin >> loginUsername;
     cout << "Enter password" << endl;
     cin >> loginPassword;
+
     // Checks to see if username is in vector
     for(int i=0; i<users.size(); i++) {
       if((users.at(i).username == loginUsername) && (users.at(i).password == loginPassword)) {
+          //return index of user
           index = i;
           return index;
       }
-      return -1;
+      
     }
+    //Auth failed, go into loop
+    return 42;
   }
 
+//--Menu interface-------------------------
   void menu(User user) {
     int choice, pages, documentNum, queueChoice, chosenDoc;
+
     //Init empty queue
     PrinterQueue printerQueue;
+    vector<int> tempQueue;
 
     do {
-      cout <<"----- User " << user.username << " -------" << endl;
+      cout <<"-------------------------------------" << endl;
+      cout << " Welcome " << user.username << endl;
+      cout << " Balance: " << user.balance  << endl;
+      cout <<"-------------------------------------" << endl;
       cout<<" [1] Add Documents" << endl;
       cout<<" [2] View Documents" << endl;
       cout<<" [3] Add Document to Printer Queue" << endl;
       cout<<" [4] View Documents in Printer Queue" << endl;
       cout<<" [5] Release Jobs" << endl;
       cout<<" [6] Logout" << endl;
+      cout <<"-------------------------------------" << endl;
       cout<<endl;
       cout<<"What do you want to do? : ";
       cin>>choice;
@@ -121,26 +139,33 @@
           cout <<"Which document do you want to print? Choose 0 for all" << endl;
           cin >> chosenDoc;
           cout << endl;
-
+          // Option to choose all documents
           if(chosenDoc == 0) {
             cout << "Choose a printer to send all to:" << endl;
             cout << "[1] PrinterA [2] PrinterB [3] PrinterC [4] PrinterD" << endl;
             cin >> queueChoice;
-            printerQueue = choosePrinter(queueChoice);             
+            printerQueue = choosePrinter(queueChoice);     
             printerQueue.addAllToQueue(user.documents);
+            // deleted record from vector 'View Documents'
             user.deleteAllFromNetwork();
             cout << endl;
           }
+          // Just a single document
           else {
             cout << "Choose a printer to send to:" << endl;
             cout << "[1] PrinterA [2] PrinterB [3] PrinterC [4] PrinterD" << endl;
             cin >> queueChoice;
             printerQueue = choosePrinter(queueChoice); 
-            printerQueue.addToQueue(chosenDoc, user.documents);
+            //Temprarily save document pages in vector 
+            tempQueue.push_back(user.documents.at(chosenDoc-1));
+            for(int i=0; i<tempQueue.size(); i++){
+              //add document pages to queue 
+              printerQueue.addToQueue(tempQueue.at(i));
+            }  
+            // remove from network
             user.deleteFromNetwork(chosenDoc);
             cout << endl;
           }
-
           break;
         case 4:
           printerQueue.showQueue();
@@ -153,17 +178,19 @@
           cout << endl;
           break;
         case 6:
-          cout << "You have successfully logged out." << endl;
+          cout << "Logging off..." << endl;
           break;
         default :
           cout << " .... ";
       }   
            
     } while(choice != 6);
-        cout << "Shutting down" << endl;
+        cout << "You have successfully logged out." << endl;
   }
-  
+
+//--Setting up Queue-------------------------
   PrinterQueue choosePrinter(int printerNumber){
+    // user choices
     if(printerNumber == 1){
       PrinterQueue QueueA;
       return QueueA;

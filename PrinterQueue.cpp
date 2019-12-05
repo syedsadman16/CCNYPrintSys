@@ -7,13 +7,13 @@ class PrinterQueue {
   public:
   queue<int> printerQueue; 
 
-  //push to the queue
-  void addToQueue(int docIndex, vector<int> documents) {
-    printerQueue.push(documents.at(docIndex-1));
-    cout << "Document " << docIndex << " added to queue" << endl;
+  // Push to the queue prints individually
+  void addToQueue(int pages) {
+    printerQueue.push(pages);
+    cout << "Document with " << pages << " pages added to queue" << endl;
   }
 
-  //Adding all documents to queue
+  // Adding all documents to queue prints all
   void addAllToQueue(vector<int> documents) {
     for(int i=0; i<documents.size(); i++) {
       printerQueue.push(documents.at(i));
@@ -21,24 +21,24 @@ class PrinterQueue {
     }
   }
 
-  //pop from the queue
+  // Pop from the queue releases the documents 
   void releasefromQueue() {
     while (!printerQueue.empty()) { 
-        cout << "Released " << printerQueue.front() << "pages" << endl;;
+        cout << "Released " << printerQueue.front() << " pages " << endl;
         printerQueue.pop();
       } 
   }
     
-  //Show all the elements in queue
+  // Show all the elements in queue
   void showQueue() { 
+    
     queue<int> tempQueue = printerQueue;
+    cout << "-----" << "Printer Queue" << "------" << endl;
       while (!tempQueue.empty()) { 
-        cout << "Document with " << tempQueue.front() << " pages" << endl; 
+        cout << "Document with " << tempQueue.front() << " pages " << endl; 
         tempQueue.pop(); 
-      } 
+      }
         cout << endl; 
   } 
   
-
 };
-
