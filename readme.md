@@ -1,5 +1,5 @@
 # CCNYPrinterQueue
-Terminal based printing system
+Terminal based printing system to mock back-end for CCNY School printer 
 
 # Features
 *Log in and menu interface*
